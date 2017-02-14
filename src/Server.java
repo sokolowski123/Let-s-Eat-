@@ -51,6 +51,43 @@ class ServerClient extends Thread {
     
     /* This fuction facilitates the communication bettween a client and the server. */
     public void run() {
-	System.out.printf("A connect between client and server has been made.");
+    	String str;
+	PrintWriter out;
+	BufferedReader in;
+	
+	System.out.printf("A connection between client and server has been made.\n");
+	try {
+
+	    /* Writing to the client. */
+	    out = new PrintWriter(clientSocket.getOutputStream());
+	    
+	    /* Reading from the client. */
+	    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+	
+	} catch (IOException e) {
+	    System.out.printf("A IOExecption has occurred when retrieveing the InputStream or OutputStream of a Socket.\n");
+	    return;
+	}
+
+	while (!clientSocket.isClosed()) {
+	    try {
+	        str = in.readLine();
+	    } catch (IOException e) {
+		System.out.printf("A IOException has occurred when retrieveing the next line from the BufferedReader.\n");
+		return;
+	    }
+	    if (str != null) {
+		
+		str = this.parseHttpRequest(str);							
+		
+	    }
+	}
+
+    }
+
+    /* This function will read a http request and turn it into something. (Databse?) */
+    /* The return type might change. */
+    public String parseHttpRequest(String request) {
+	return "Information for Database";
     }
 }
