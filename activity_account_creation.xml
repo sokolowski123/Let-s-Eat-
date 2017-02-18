@@ -1,0 +1,123 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#0099cc"
+    tools:context=".AccountCreationActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#33b5e5"
+        android:textStyle="bold" android:textSize="50sp" android:gravity="center"
+        android:text="@string/dummy_content" />
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="center"
+        android:id="@+id/Password"
+        android:background="#93C580">
+
+        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="165dp"
+            android:layout_height="98dp"
+            android:text="Create Account"
+            android:id="@+id/createAccountButton"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="30dp"
+            android:background="#ff6961"
+            android:textSize="15dp"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Create Account"
+            android:id="@+id/createAccountTextView"
+            android:layout_gravity="center_horizontal|top"
+            android:textColor="#FF6961"
+            android:textSize="40dp"
+            android:layout_marginTop="20dp"
+            android:typeface="monospace"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/reenterPasswordEditText"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:background="#ffffff"
+            android:layout_marginTop="70dp" />
+
+        <TextView
+            android:layout_width="297dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Re-enter password."
+            android:id="@+id/reenterPasswordTextView"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="-40dp"
+            android:textSize="15dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/passwordEditText"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:background="#ffffff"
+            android:layout_marginTop="-5dp" />
+
+        <TextView
+            android:layout_width="305dp"
+            android:layout_height="75dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Enter a password. Passwords must be at least 5 characters long, containing at least 1 capital letter and 1 number."
+            android:id="@+id/passwordTextView"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:layout_marginTop="-45dp"
+            android:textSize="15dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/emailEditText"
+            android:layout_gravity="center_horizontal|top"
+            android:background="#ffffff"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="120dp"
+            android:textColor="#C0C0C0" />
+
+        <TextView
+            android:layout_width="297dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Enter a valid email address."
+            android:id="@+id/emailTextView"
+            android:layout_gravity="center_horizontal|top"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            android:layout_marginTop="95dp" />
+
+    </FrameLayout>
+
+</FrameLayout>
