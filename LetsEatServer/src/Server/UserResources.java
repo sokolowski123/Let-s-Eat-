@@ -4,7 +4,7 @@ import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/user")
+@Path("/users")
 public class UserResources {
 
     @GET
@@ -25,7 +25,6 @@ public class UserResources {
     		@FormParam("name") String name,
     		@FormParam("gender") String gender,
     		@FormParam("matchs") List<List <Match>> matches) {
-    	User user = new User(dataOfBirth, userId, name, gender, matches);
     	
     	/* Put user in the database. */
     	
