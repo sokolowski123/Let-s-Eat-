@@ -27,11 +27,6 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-server</artifactId>
-      <version>1.9</version>
-    </dependency>
-    <dependency>
         <groupId>org.mongodb</groupId>
         <artifactId>mongodb-driver</artifactId>
         <version>3.4.2</version>

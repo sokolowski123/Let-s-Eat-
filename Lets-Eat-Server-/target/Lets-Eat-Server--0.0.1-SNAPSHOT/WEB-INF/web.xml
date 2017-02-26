@@ -5,11 +5,15 @@
   <servlet>
   		<servlet-name>Let's-Eat-REST-Service</servlet-name>
   		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+  		<init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>LetsEatServer</param-value>
+        </init-param>
     	<load-on-startup>1</load-on-startup>
     </servlet>
 	<servlet-mapping>
   		<servlet-name>Let's-Eat-REST-Service</servlet-name>
-  		<url-pattern>/test/*</url-pattern>
+  		<url-pattern>/*</url-pattern>
   	</servlet-mapping>
   
   <welcome-file-list>
