@@ -3,12 +3,12 @@
   <display-name>Lets-Eat-Server-</display-name>
   
   <servlet>
-  		<servlet-name>Let's Eat REST Service</servlet-name>
+  		<servlet-name>Let's-Eat-REST-Service</servlet-name>
   		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     	<load-on-startup>1</load-on-startup>
     </servlet>
 	<servlet-mapping>
-  		<servlet-name>Let's Eat REST Service</servlet-name>
+  		<servlet-name>Let's-Eat-REST-Service</servlet-name>
   		<url-pattern>/test/*</url-pattern>
   	</servlet-mapping>
   
