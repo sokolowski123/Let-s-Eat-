@@ -9,9 +9,9 @@ public class User {
 	String userId;
     String name;
     String gender;
-    List <List <Match>> matches;
+    Match[] matches;
     
-    public User(int dataOfBirth, String userId, String name, String gender, List <List <Match>> matches) {
+    public User(int dataOfBirth, String userId, String name, String gender, Match[] matches) {
     	this.dataOfBirth = dataOfBirth;
     	this.userId = userId;
         this.name = name;
