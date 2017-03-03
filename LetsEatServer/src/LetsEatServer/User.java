@@ -9,9 +9,9 @@ public class User {
     String name;
     String gender;
     Match[] matches;
-    String[] chatHist;
+    String[][] chatHist;
     
-    public User(String dataOfBirth, String userId, String name, String gender, Match[] matches, String[] chatHist) {
+    public User(String dataOfBirth, String userId, String name, String gender, Match[] matches, String[][] chatHist) {
     	this.dataOfBirth = dataOfBirth;
     	this.userId = userId;
         this.name = name;
