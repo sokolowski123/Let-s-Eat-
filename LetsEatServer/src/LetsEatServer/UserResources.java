@@ -57,6 +57,11 @@ public class UserResources {
     		return;
     	}
     	
+    	JsonNode array = node.get("chatHist");
+    	Document chat = new Document();
+    	chat.append("message1", array.get("message1").textValue());
+    	chat.append("message2", array.get("message2").textValue());
+    	
     	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
     	mongo = new MongoClient(adr);
     	data = mongo.getDatabase("Users");
@@ -65,7 +70,7 @@ public class UserResources {
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", node.get("chatHist").textValue())));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
     	mongo.close();
     }
     
@@ -87,6 +92,12 @@ public class UserResources {
     	} catch (Exception e) {
     		return;
     	}
+    	
+    	JsonNode array = node.get("chatHist");
+    	Document chat = new Document();
+    	chat.append("message1", array.get("message1").textValue());
+    	chat.append("message2", array.get("message2").textValue());
+    	
     	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
     	mongo = new MongoClient(adr);
     	data = mongo.getDatabase("Users");
@@ -95,7 +106,7 @@ public class UserResources {
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", node.get("chatHist").textValue())));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
     	mongo.close();
     }
     

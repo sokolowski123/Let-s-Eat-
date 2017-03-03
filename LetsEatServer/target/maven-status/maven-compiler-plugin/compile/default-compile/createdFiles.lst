@@ -5,7 +5,6 @@ LetsEatServer\Profile.class
 LetsEatServer\ProfileResources.class
 LetsEatServer\UserResources.class
 LetsEatServer\PassHash$InvalidHashException.class
-LetsEatServer\ResponseParser.class
 LetsEatServer\PassHash$CannotPerformOperationException.class
 LetsEatServer\Match.class
 LetsEatServer\PassHash.class

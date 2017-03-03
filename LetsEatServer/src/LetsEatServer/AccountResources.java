@@ -100,6 +100,7 @@ public class AccountResources {
     	data = mongo.getDatabase("Users");
     	doc = data.getCollection("USERS");
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("password", node.get("password").textValue())));
+    	doc.findOneAndDelete(new Document("_id", userId));
     	mongo.close();
 		
 	}
