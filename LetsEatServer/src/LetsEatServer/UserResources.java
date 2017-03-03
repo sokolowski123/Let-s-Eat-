@@ -4,21 +4,25 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import com.mongodb.*;
 import com.mongodb.client.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.bson.*;
 
 @Path("/users")
 public class UserResources {
 
     @GET
-    @Path("{userId}")
-    @Produces(MediaType.TEXT_HTML)
+    @Path("/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     public String getUser(@PathParam("userId") String userId) {
         ServerAddress adr;
     	MongoClient mongo;
     	MongoDatabase data;
     	MongoCollection<Document> doc;
     	BasicDBObject user;
-    	Document cur;
+    	Document cur; 
     	
     	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
     	mongo = new MongoClient(adr);
@@ -27,41 +31,90 @@ public class UserResources {
     	user = new BasicDBObject("_id", userId);
     	cur = doc.find(user).first();
     	mongo.close();
-    	
-    	return "<html> " + "<title>" + cur.toJson() + "</title>"
-    	        + "<body><h1>" + cur.toJson() + "</body></h1>" + "</html> ";
+    	if (cur == null) {
+    		return "hello";
+    	}
+    	return cur.toJson();
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     public void newUser(
-    		@FormParam("dataOfBirth") int dataOfBirth,
-    		@FormParam("userId") String userId, 
-    		@FormParam("name") String name,
-    		@FormParam("gender") String gender) {
+    		@PathParam("userId") String userId,
+    		String user) {
+    	ServerAddress adr;
+    	MongoClient mongo;
+    	MongoDatabase data;
+    	MongoCollection<Document> doc;
     	
-    	 /* Put user in the database. */ 
+    	ObjectMapper map = new ObjectMapper();
+    	JsonNode node;
+    	try {
+    		node = map.readTree(user);
+    	} catch (Exception e) {
+    		return;
+    	}
     	
+    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	mongo = new MongoClient(adr);
+    	data = mongo.getDatabase("Users");
+    	doc = data.getCollection("USERS");
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("dateOfBirth", node.get("dateOfBirth").textValue())));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
+    	mongo.close();
     }
     
     @POST
-    @Path("{userId}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     public void changeUser(
-    		@FormParam("dataOfBirth") int dataOfBirth,
-    		@FormParam("userId") String userId, 
-    		@FormParam("name") String name,
-    		@FormParam("gender") String gender) {
-    	
-    	/* Change user information in the database. */
-    	
+    		@PathParam("userId") String userId,
+    		String user) {
+    	ServerAddress adr;
+    	MongoClient mongo;
+    	MongoDatabase data;
+    	MongoCollection<Document> doc;
+    	ObjectMapper map = new ObjectMapper();
+    	JsonNode node;
+    	try {
+    		node = map.readTree(user);
+    	} catch (Exception e) {
+    		return;
+    	}
+    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	mongo = new MongoClient(adr);
+    	data = mongo.getDatabase("Users");
+    	doc = data.getCollection("USERS");
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("dateOfBirth", node.get("dateOfBirth").textValue())));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
+    	mongo.close();
     }
     
     @DELETE
     @Path("{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
     public void deleteUser(@PathParam("userId") String userId) {
+    	ServerAddress adr;
+    	MongoClient mongo;
+    	MongoDatabase data;
+    	MongoCollection<Document> doc;
     	
-    	/* Delete user from database. */
+    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	mongo = new MongoClient(adr);
+    	data = mongo.getDatabase("Users");
+    	doc = data.getCollection("USERS");
+    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("dateOfBirth", 1)));
+    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("name", 1)));
+    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("gender", 1)));
+    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("matches", 1)));
+    	mongo.close();    	
     	
     }
     

@@ -1,11 +1,11 @@
 package LetsEatServer;
 
 public class Account {
-	String email;
+	String userId;
 	String password;
 	
-	public Account(String email, String password) {
-		this.email = email;
+	public Account(String userId, String password) {
+		this.userId = userId;
 		this.password = password;
 	}
 }

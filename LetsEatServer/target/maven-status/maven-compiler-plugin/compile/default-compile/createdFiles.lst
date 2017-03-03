@@ -4,4 +4,7 @@ LetsEatServer\Account.class
 LetsEatServer\Profile.class
 LetsEatServer\ProfileResources.class
 LetsEatServer\UserResources.class
+LetsEatServer\PassHash$InvalidHashException.class
+LetsEatServer\PassHash$CannotPerformOperationException.class
 LetsEatServer\Match.class
+LetsEatServer\PassHash.class
