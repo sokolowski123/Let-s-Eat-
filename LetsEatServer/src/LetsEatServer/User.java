@@ -1,19 +1,24 @@
 package LetsEatServer;
 
+import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
-	String dateOfBirth;
-	String userId;
-        String name;
-    	String gender;
-    	Match[] matches;
-	String[][] chat;
+    String dataOfBirth;
+    String userId;
+    String name;
+    String gender;
+    Match[] matches;
+    String[][] chatHist;
     
-    public User(String dateOfBirth, String userId, String name, String gender, Match[] matches, String[][] chat) {
-    	this.dateOfBirth = dateOfBirth;
+    public User(String dataOfBirth, String userId, String name, String gender, Match[] matches, String[][] chatHist) {
+    	this.dataOfBirth = dataOfBirth;
     	this.userId = userId;
         this.name = name;
         this.gender = gender;
         this.matches = matches;
-	this.chat = chat;
+        this.chatHist = chatHist;
     }
+    
 }
