@@ -65,6 +65,7 @@ public class UserResources {
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", node.get("chatHist").textValue())));
     	mongo.close();
     }
     
@@ -94,6 +95,7 @@ public class UserResources {
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", node.get("chatHist").textValue())));
     	mongo.close();
     }
     
@@ -114,6 +116,7 @@ public class UserResources {
     	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("name", 1)));
     	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("gender", 1)));
     	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("matches", 1)));
+    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("chatHist", 1)));
     	mongo.close();    	
     	
     }
