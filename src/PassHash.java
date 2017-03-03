@@ -10,7 +10,7 @@ import javax.xml.bind.DatatypeConverter;
 
 public class PassHash {
 
-    // Main method is for testing pursposes
+    // Main method is for testing purposes
     // public static void main(String[] args) throws CannotPerformOperationException, InvalidHashException {
     //     if (args.length == 2) {
     //         try {
