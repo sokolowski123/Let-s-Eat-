@@ -1,5 +1,7 @@
 package LetsEatServer;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import com.mongodb.*;
@@ -58,9 +60,10 @@ public class UserResources {
     	}
     	
     	JsonNode array = node.get("chatHist");
-    	Document chat = new Document();
-    	chat.append("message1", array.get("message1").textValue());
-    	chat.append("message2", array.get("message2").textValue());
+    	List<String> messages = new ArrayList<String>();
+    	for (int i = 1; i <= array.size(); i++) {
+    		messages.add(array.get("message" + String.valueOf(i)).textValue());
+    	}
     	
     	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
     	mongo = new MongoClient(adr);
@@ -70,7 +73,7 @@ public class UserResources {
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
         doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", messages)));
     	mongo.close();
     }
     
@@ -94,9 +97,10 @@ public class UserResources {
     	}
     	
     	JsonNode array = node.get("chatHist");
-    	Document chat = new Document();
-    	chat.append("message1", array.get("message1").textValue());
-    	chat.append("message2", array.get("message2").textValue());
+    	List<String> messages = new ArrayList<String>();
+    	for (int i = 1; i <= array.size(); i++) {
+    		messages.add(array.get("message" + String.valueOf(i)).textValue());
+    	}
     	
     	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
     	mongo = new MongoClient(adr);
@@ -106,7 +110,7 @@ public class UserResources {
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
     	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
+    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", messages)));
     	mongo.close();
     }
     
