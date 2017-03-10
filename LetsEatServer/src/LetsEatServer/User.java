@@ -1,8 +1,5 @@
 package LetsEatServer;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class User {
     String dataOfBirth;
     String userId;

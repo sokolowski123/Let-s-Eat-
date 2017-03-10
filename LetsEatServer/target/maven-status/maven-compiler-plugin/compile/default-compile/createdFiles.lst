@@ -1,6 +1,7 @@
 LetsEatServer\User.class
 LetsEatServer\AccountResources.class
 LetsEatServer\Account.class
+LetsEatServer\ChatResources.class
 LetsEatServer\Profile.class
 LetsEatServer\ProfileResources.class
 LetsEatServer\UserResources.class
