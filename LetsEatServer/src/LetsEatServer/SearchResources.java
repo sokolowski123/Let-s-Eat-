@@ -23,6 +23,7 @@ public class SearchResources {
 		client.close();
 		List list = new ArrayList();
 		MongoCursor<Document> cursor = users.iterator();
+		Document caller = Collection.find(new Document("_id", userId)); 
 		while (cursor.hasNext()) {
 			Document user =  cursor.next();
 			list.add(user);
