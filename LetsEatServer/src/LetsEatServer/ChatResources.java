@@ -65,7 +65,9 @@ public class ChatResources {
     	user = new Document();
     	while (fields.hasNext()) {
     		field = fields.next();
-    		user.put(field, node.get(field).textValue());
+    		if (node.get(field).isArray()) {
+    			user.put(field, node.withArray(field));
+    		}
     	}
     	return user.toJson();
     	
@@ -111,6 +113,8 @@ public class ChatResources {
     	mongo = new MongoClient(adr);
     	data = mongo.getDatabase("Users");
     	doc = data.getCollection("CHAT");
+    	
+    	
     	
     	mongo.close(); */
 	}
