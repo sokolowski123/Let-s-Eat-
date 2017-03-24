@@ -26,7 +26,9 @@ public class SearchResources {
 		Document caller = Collection.find(new Document("_id", userId)); 
 		while (cursor.hasNext()) {
 			Document user =  cursor.next();
-			list.add(user);
+			if (Search.getDistance(caller.get("location"), user.get("location") <= (user.get(maxRange) + caller.get(maxRange))) {
+				list.add(user);
+			}
 		}
 		return list;
 		
