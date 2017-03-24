@@ -1,4 +1,4 @@
-package cs307spring17team26.lets_eat_;
+package LetsEatServer;
 
 /******************************************************************************
  *  Compilation:  javac Location.java
