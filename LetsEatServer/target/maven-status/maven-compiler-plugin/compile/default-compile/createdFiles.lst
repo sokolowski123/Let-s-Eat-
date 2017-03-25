@@ -1,0 +1,16 @@
+LetsEatServer\User.class
+LetsEatServer\AccountResources.class
+LetsEatServer\MatchResources.class
+LetsEatServer\SearchResources.class
+LetsEatServer\UserResources.class
+LetsEatServer\PassHash$InvalidHashException.class
+LetsEatServer\Match.class
+LetsEatServer\PassHash.class
+LetsEatServer\Location.class
+LetsEatServer\Search.class
+LetsEatServer\Account.class
+LetsEatServer\ChatResources.class
+LetsEatServer\Profile.class
+LetsEatServer\ProfileResources.class
+LetsEatServer\ResponseParser.class
+LetsEatServer\PassHash$CannotPerformOperationException.class

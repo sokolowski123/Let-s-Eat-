@@ -8,7 +8,6 @@ import com.mongodb.*;
 import com.mongodb.client.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.bson.*;
 
 @Path("/users")
