@@ -1,0 +1,18 @@
+App ID:
+3c0-s11Ur_hVQm1TtgoaUg
+
+App Secret:
+BwDeHtOK3uhaK1Df5YBW7oudMdGkKMdpVNzqmRjcjH3Pr33D4vHsglYa9uBjeMxT
+
+AWS Pass:
+asncrwhimp3011
+
+
+From API Page:
+Consumer Key:	 jINYfs_pNzwGGFJJdVUF-g
+Consumer Secret: d0Z7lmAkmiSfP8uXFKPF8SUOuCk
+Token:	         PZy9JPPRb4RvqXSuFyJerK8xaYBYf6KH
+Token Secret:	 ONRsjq3_gxHWF7v5xergJO5r94M
+
+
+account email: alexsokol45@gmail.com
