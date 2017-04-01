@@ -35,11 +35,26 @@ public class SearchResources {
 		while (cursor.hasNext()) {
 			Document user =  cursor.next();
 			
-			/* Only return the users who are within the calling user's range. */
-			List<Double> callerLoc = (List<Double>) caller.get("location");
-			List<Double> userLoc = (List<Double>) user.get("location");
-			if (Search.getDistance(callerLoc, userLoc) <= Double.parseDouble(Integer.toString(((int) user.get("maxRange") + (int) caller.get("maxRange"))))) {
-				doc.append(user.getString("_id"), user);
+			/* Don't return the caller in the search. */
+			if (user.getString("_id") != caller.getString("_id")) {
+			
+			    /* Only return the users who are within the calling user's range. */
+			    List<Double> callerLoc = (List<Double>) caller.get("location");
+			    List<Double> userLoc = (List<Double>) user.get("location");
+				if (Search.getDistance(callerLoc, userLoc) <= Double.parseDouble(Integer.toString(((int) user.get("maxRange") + (int) caller.get("maxRange"))))) {
+				    
+					/* Check that the user and caller have not interacted before. */
+					MongoCollection<Document> matches = database.getCollection("MATCHES");
+					Document callerMatches = matches.find(new Document("_id", userId)).first();
+					if (callerMatches.get(user.getString("_id")) != null) {
+						
+						/* If user passes through statements, then add is a possible match. */
+					    doc.append(user.getString("_id"), user);
+					    
+					}
+					
+				}
+				
 			}
 			
 		}

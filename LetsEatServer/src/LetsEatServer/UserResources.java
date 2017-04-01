@@ -28,11 +28,18 @@ public class UserResources {
     	
     	/* If the user does not exist, return null. */
     	if (doc.find(new Document("_id", userId)).first() == null) {
+    		mongo.close();
     		return null;
     	}
     	
+    	/* Get the user's document from the database. */
+    	Document user = doc.find(new Document("_id", userId)).first();
+    	
+    	/* Close the connection to the database. */
+    	mongo.close();
+    	
     	/* If the user exists, return all the user's information. */
-    	return doc.find(new Document("_id", userId)).first().toJson();
+    	return user.toJson();
     	
     }
 
@@ -124,6 +131,11 @@ public class UserResources {
     	MongoClient mongo = new MongoClient(adr);
     	MongoDatabase data = mongo.getDatabase("Users");
     	MongoCollection<Document> doc = data.getCollection("USERS");
+    	
+    	/* Create a new document in the collection if one has not been created yet. */
+    	if (doc.find(new Document("_id", userId)).first() == null) {
+    		 doc.insertOne(new Document("_id", userId));
+    	}
     	
     	/* Update the user's email/id if given. */
     	if (node.get("_id") != null) {
