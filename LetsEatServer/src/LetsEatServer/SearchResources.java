@@ -46,7 +46,7 @@ public class SearchResources {
 					/* Check that the user and caller have not interacted before. */
 					MongoCollection<Document> matches = database.getCollection("MATCHES");
 					Document callerMatches = matches.find(new Document("_id", userId)).first();
-					if (callerMatches.get(user.getString("_id")) != null) {
+					if (callerMatches.get(user.getString("_id")) == null) {
 						
 						/* If user passes through statements, then add is a possible match. */
 					    doc.append(user.getString("_id"), user);
