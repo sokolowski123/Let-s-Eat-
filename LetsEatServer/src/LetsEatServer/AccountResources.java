@@ -13,20 +13,20 @@ import com.mongodb.client.MongoDatabase;
 @Path("/account")
 public class AccountResources {
 	
-	@PUT
-	@Path("/{userId}/compare")
+	@GET
+	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean compareAccount(@PathParam("userId") String userId, String account) {
+	public String compareAccount(@PathParam("userId") String userId /* , String account */) {
 		
 		/* Create a JsonNode from the JSON object given by the user. The JSON object given by the user is stored in user. */
-    	ObjectMapper map = new ObjectMapper();
+    	/* ObjectMapper map = new ObjectMapper();
     	JsonNode node;
     	try {
     		node = map.readTree(account);
     	} catch (Exception e) {
     		return false;
-    	}
+    	} */
     	
     	/* Connect to the MongoDB database. */
     	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
@@ -37,26 +37,24 @@ public class AccountResources {
     	/* Check that the user has an account. */
     	if (doc.find(new Document("_id", userId)) == null) {
     		mongo.close();
-    		return false;
+    		return null;
     	}
     	
     	/* Get the calling user's account information. */
     	Document user = doc.find(new Document("_id", userId)).first();
     	
     	/* Compare the given password with the password that is stored in the database. */
-    	boolean check;
     	try {
-    		check = PassHash.verifyPass(node.get("password").textValue(), user.getString("password"));
+    		PassHash.verifyPass(/* node.get("password").textValue()*/ "hello", user.getString("password"));
     	} catch (Exception e) {
     		mongo.close();
-    		return false;
+    		return null;
     	}
     	
     	/* Close the connection to the database. */
     	mongo.close();
     	
-    	return check;
-    	
+    	return "What!";
 	}
 	
 	@PUT
@@ -117,6 +115,10 @@ public class AccountResources {
     	MongoClient mongo = new MongoClient(adr);
     	MongoDatabase data = mongo.getDatabase("Users");
     	MongoCollection<Document> doc = data.getCollection("ACCOUNTS");
+    	
+    	if (doc.find(new Document("_id", userId)).first() == null) {
+   		     doc.insertOne(new Document("_id", userId));
+   	    }
     	
     	/* Hash the password that will be put in the database. */
     	String hash;
