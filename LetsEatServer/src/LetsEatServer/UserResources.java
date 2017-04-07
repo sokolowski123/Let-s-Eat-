@@ -1,12 +1,14 @@
 package LetsEatServer;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import com.mongodb.*;
 import com.mongodb.client.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.bson.*;
 
 @Path("/users")
@@ -16,39 +18,38 @@ public class UserResources {
     @Path("/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public String getUser(@PathParam("userId") String userId) {
-        ServerAddress adr;
-    	MongoClient mongo;
-    	MongoDatabase data;
-    	MongoCollection<Document> doc;
-    	BasicDBObject user;
-    	Document cur; 
+    public String getUser(@PathParam("userId") String userId) { 
     	
-    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
-    	mongo = new MongoClient(adr);
-    	data = mongo.getDatabase("Users");
-    	doc = data.getCollection("USERS");
-    	user = new BasicDBObject("_id", userId);
-    	cur = doc.find(user).first();
-    	mongo.close();
-    	if (cur == null) {
-    		return "hello";
+    	/* Connect to the MongoDB database. */
+    	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	MongoClient mongo = new MongoClient(adr);
+    	MongoDatabase data = mongo.getDatabase("Users");
+    	MongoCollection<Document> doc = data.getCollection("USERS");
+    	
+    	/* If the user does not exist, return null. */
+    	if (doc.find(new Document("_id", userId)).first() == null) {
+    		mongo.close();
+    		return null;
     	}
-    	return cur.toJson();
+    	
+    	/* Get the user's document from the database. */
+    	Document user = doc.find(new Document("_id", userId)).first();
+    	
+    	/* Close the connection to the database. */
+    	mongo.close();
+    	
+    	/* If the user exists, return all the user's information. */
+    	return user.toJson();
+    	
     }
 
     @PUT
     @Path("/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public void newUser(
-    		@PathParam("userId") String userId,
-    		String user) {
-    	ServerAddress adr;
-    	MongoClient mongo;
-    	MongoDatabase data;
-    	MongoCollection<Document> doc;
+    public void changeUser(@PathParam("userId") String userId, String user) {
     	
+    	/* Create a JsonNode from the JSON object given by the user. The JSON object given by the user is stored in user. */
     	ObjectMapper map = new ObjectMapper();
     	JsonNode node;
     	try {
@@ -57,34 +58,66 @@ public class UserResources {
     		return;
     	}
     	
-    	JsonNode array = node.get("chatHist");
-    	Document chat = new Document();
-    	chat.append("message1", array.get("message1").textValue());
-    	chat.append("message2", array.get("message2").textValue());
+    	/* Connect to the MongoDB database. */
+    	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	MongoClient mongo = new MongoClient(adr);
+    	MongoDatabase data = mongo.getDatabase("Users");
+    	MongoCollection<Document> doc = data.getCollection("USERS");
     	
-    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
-    	mongo = new MongoClient(adr);
-    	data = mongo.getDatabase("Users");
-    	doc = data.getCollection("USERS");
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("dateOfBirth", node.get("dateOfBirth").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
-    	mongo.close();
+    	/* Update the user's email/id if given. */
+    	if (node.get("_id") != null) {
+    	     doc.updateOne(new Document("_id", userId), new Document("$set", new Document("_id", node.get("_id").textValue())));
+    	}
+    	     
+    	/* Update the user's age if given. */
+    	if (node.get("age") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("age", node.get("age").asInt())));
+    	}
+    	
+    	/* Update the user's maxRange if given. */
+    	if (node.get("maxRange") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("maxRange", node.get("maxRange").asInt())));
+    	}
+    	
+    	/* Update the user's location if given. */
+    	if (node.get("location") != null) {
+    	    JsonNode array = node.get("location");
+            Iterator<JsonNode> arrayValues = array.elements();
+            List<Double> values = new ArrayList<Double>();
+            while (arrayValues.hasNext()) {
+         	    JsonNode value = arrayValues.next();
+        	    values.add(Double.valueOf(value.asDouble()));
+            }
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("location", values)));
+    	}
+         
+    	/* Update the user's biography if given. */
+        if (node.get("bio") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("bio", node.get("bio").textValue())));
+        }
+    	    
+        /* Update the user's gender if given. */
+        if (node.get("gender") != null) {
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
+        }
+         
+        /* Update the user's name if given. */
+        if (node.get("name") != null) {
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
+        } 
+        
+        /* Close connection to database. */
+        mongo.close();
+    
     }
     
     @POST
     @Path("/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public void changeUser(
-    		@PathParam("userId") String userId,
-    		String user) {
-    	ServerAddress adr;
-    	MongoClient mongo;
-    	MongoDatabase data;
-    	MongoCollection<Document> doc;
+    public void createUser(@PathParam("userId") String userId, String user) {
+    	
+    	/* Create a JsonNode from the JSON object given by the user. The JSON object given by the user is stored in user. */
     	ObjectMapper map = new ObjectMapper();
     	JsonNode node;
     	try {
@@ -93,42 +126,80 @@ public class UserResources {
     		return;
     	}
     	
-    	JsonNode array = node.get("chatHist");
-    	Document chat = new Document();
-    	chat.append("message1", array.get("message1").textValue());
-    	chat.append("message2", array.get("message2").textValue());
+    	/* Connect to the MongoDB database. */
+    	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	MongoClient mongo = new MongoClient(adr);
+    	MongoDatabase data = mongo.getDatabase("Users");
+    	MongoCollection<Document> doc = data.getCollection("USERS");
     	
-    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
-    	mongo = new MongoClient(adr);
-    	data = mongo.getDatabase("Users");
-    	doc = data.getCollection("USERS");
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("dateOfBirth", node.get("dateOfBirth").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matches", node.get("matches").textValue())));
-    	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatHist", chat)));
-    	mongo.close();
+    	/* Create a new document in the collection if one has not been created yet. */
+    	if (doc.find(new Document("_id", userId)).first() == null) {
+    		 doc.insertOne(new Document("_id", userId));
+    	}
+    	
+    	/* Update the user's email/id if given. */
+    	if (node.get("_id") != null) {
+    	     doc.updateOne(new Document("_id", userId), new Document("$set", new Document("_id", node.get("_id").textValue())));
+    	}
+    	     
+    	/* Update the user's age if given. */
+    	if (node.get("age") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("age", node.get("age").asInt())));
+    	}
+    	
+    	/* Update the user's maxRange if given. */
+    	if (node.get("maxRange") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("maxRange", node.get("maxRange").asInt())));
+    	}
+    	
+    	/* Update the user's location if given. */
+    	if (node.get("location") != null) {
+    	    JsonNode array = node.get("location");
+            Iterator<JsonNode> arrayValues = array.elements();
+            List<Double> values = new ArrayList<Double>();
+            while (arrayValues.hasNext()) {
+         	    JsonNode value = arrayValues.next();
+        	    values.add(Double.valueOf(value.asDouble()));
+            }
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("location", values)));
+    	}
+         
+    	/* Update the user's biography if given. */
+        if (node.get("bio") != null) {
+    	    doc.updateOne(new Document("_id", userId), new Document("$set", new Document("bio", node.get("bio").textValue())));
+        }
+    	    
+        /* Update the user's gender if given. */
+        if (node.get("gender") != null) {
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("gender", node.get("gender").textValue())));
+        }
+         
+        /* Update the user's name if given. */
+        if (node.get("name") != null) {
+            doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
+        } 
+        
+        /* Close connection to database. */
+        mongo.close();
+        
     }
     
     @DELETE
     @Path("{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void deleteUser(@PathParam("userId") String userId) {
-    	ServerAddress adr;
-    	MongoClient mongo;
-    	MongoDatabase data;
-    	MongoCollection<Document> doc;
     	
-    	adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
-    	mongo = new MongoClient(adr);
-    	data = mongo.getDatabase("Users");
-    	doc = data.getCollection("USERS");
-    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("dateOfBirth", 1)));
-    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("name", 1)));
-    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("gender", 1)));
-    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("matches", 1)));
-    	doc.updateOne(new Document("_id", userId), new Document("$unset", new Document("chatHist", 1)));
-    	mongo.close();    	
+    	/* Connect to the MongoDB database. */
+    	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
+    	MongoClient mongo = new MongoClient(adr);
+    	MongoDatabase data = mongo.getDatabase("Users");
+    	MongoCollection<Document> doc = data.getCollection("USERS");
+
+    	/* Delete the document containing the user's information. */
+    	doc.deleteOne(new Document("_id", userId));
+
+        /* Close connection to database. */
+        mongo.close();
     	
     }
     

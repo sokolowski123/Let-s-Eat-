@@ -1,14 +1,11 @@
 package LetsEatServer;
 
 import java.util.Arrays;
-
 import org.bson.Document;
-
-import com.mongodb.*;
 
 public class ResponseParser {
 	
-	public static void main(String[] args) {
+	/* public static void main(String[] args) {
 		
 		ResponseParser parse = new ResponseParser();
 		Document user = new Document();
@@ -27,7 +24,7 @@ public class ResponseParser {
 		User userA = parse.parseUser(user);
 		parse.parseMessage(user);
 		
-	}
+	} */
 	
 	
 	Account parseAccount(Document user) {
@@ -39,7 +36,7 @@ public class ResponseParser {
 	String parseMessage(Document user) {
 		String message = user.get("_chat").toString();
 		//System.out.println(message);
-		return "";
+		return message;
 	}
 	
 	User parseUser(Document user) {
