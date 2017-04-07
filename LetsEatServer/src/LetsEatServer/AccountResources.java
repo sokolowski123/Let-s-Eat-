@@ -37,7 +37,7 @@ public class AccountResources {
     	/* Check that the user has an account. */
     	if (doc.find(new Document("_id", userId)) == null) {
     		mongo.close();
-    		return null;
+    		return "hi";
     	}
     	
     	/* Get the calling user's account information. */
@@ -45,10 +45,10 @@ public class AccountResources {
     	
     	/* Compare the given password with the password that is stored in the database. */
     	try {
-    		PassHash.verifyPass(/* node.get("password").textValue()*/ "hello", user.getString("password"));
+    		PassHash.verifyPass(/* node.get("password").textValue()*/ "hello/n", user.getString("password"));
     	} catch (Exception e) {
     		mongo.close();
-    		return null;
+    		return e.getMessage();
     	}
     	
     	/* Close the connection to the database. */
