@@ -13,32 +13,32 @@ import javax.xml.bind.DatatypeConverter;
 public class PassHash {
 
     // Main method is for testing purposes
-    // public static void main(String[] args) throws CannotPerformOperationException, InvalidHashException {
-    //     if (args.length == 2) {
-    //         try {
-    //             String pass = args[0];
-    //             String attempt = args[1];
-    //             String passHash = createHash(pass);
-    //             if (verifyPass(attempt, passHash)) {
-    //                 System.out.println("Login verified");
-    //                 System.out.println(passHash);
-    //                 return;
-    //             } else {
-    //                 System.out.println("Username or password is incorrect");
-    //                 System.out.println(passHash);
-    //                 return;
-    //             }
-    //         } catch (CannotPerformOperationException e) {
-    //             throw new CannotPerformOperationException("Couldn't create hash of password or verify password", e);
-    //         } catch (InvalidHashException e) {
-    //             throw new InvalidHashException("Couldn't create hash of password or verify passworkd", e);
-    //         }
-            
-    //     } else {
-    //         System.out.println("Please use a single argument");
-    //         return;
-    //     }
-    // }
+    public static void main(String[] args) throws CannotPerformOperationException, InvalidHashException {
+        if (args.length == 2) {
+            try {
+                String pass = args[0];
+                String attempt = args[1];
+                String passHash = createHash(pass);
+                if (verifyPass(attempt, passHash)) {
+                    System.out.println("Login verified");
+                    System.out.println(passHash);
+                    return;
+                } else {
+                    System.out.println("Username or password is incorrect");
+                    System.out.println(passHash);
+                    return;
+                }
+            } catch (CannotPerformOperationException e) {
+                throw new CannotPerformOperationException("Couldn't create hash of password or verify password", e);
+            } catch (InvalidHashException e) {
+                throw new InvalidHashException("Couldn't create hash of password or verify passworkd", e);
+            }
+         
+        } else {
+            System.out.println("Please use a single argument");
+            return;
+        }
+    }
     
     @SuppressWarnings("serial")
     public static class InvalidHashException extends Exception {
