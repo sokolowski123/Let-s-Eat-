@@ -13,20 +13,22 @@ import com.mongodb.client.MongoDatabase;
 @Path("/account")
 public class AccountResources {
 	
-	@GET
-	@Path("/{userId}")
+	@PUT
+	@Path("/{userId}/check")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String compareAccount(@PathParam("userId") String userId /* , String account */) {
+	public String compareAccount(@PathParam("userId") String userId, String account) {
 		
 		/* Create a JsonNode from the JSON object given by the user. The JSON object given by the user is stored in user. */
-    	/* ObjectMapper map = new ObjectMapper();
+    	ObjectMapper map = new ObjectMapper();
     	JsonNode node;
+    	Document message = new Document();
     	try {
     		node = map.readTree(account);
     	} catch (Exception e) {
-    		return false;
-    	} */
+    		message.put("message", false);
+    		return message.toJson();
+    	}
     	
     	/* Connect to the MongoDB database. */
     	ServerAddress adr = new ServerAddress("ec2-52-41-45-85.us-west-2.compute.amazonaws.com", 27017);
@@ -37,24 +39,28 @@ public class AccountResources {
     	/* Check that the user has an account. */
     	if (doc.find(new Document("_id", userId)) == null) {
     		mongo.close();
-    		return "hi";
+    		message.put("message", false);
+    		return message.toJson();
     	}
     	
     	/* Get the calling user's account information. */
     	Document user = doc.find(new Document("_id", userId)).first();
     	
     	/* Compare the given password with the password that is stored in the database. */
+    	boolean check = false;
     	try {
-    		PassHash.verifyPass(/* node.get("password").textValue()*/ "hello/n", user.getString("password"));
+    		check = PassHash.verifyPass(node.get("password").textValue(), user.getString("password"));
     	} catch (Exception e) {
     		mongo.close();
-    		return e.getMessage();
+    		message.put("message", false);
+    		return message.toJson();
     	}
     	
     	/* Close the connection to the database. */
     	mongo.close();
     	
-    	return "What!";
+    	message.put("message", check);
+		return message.toJson();
 	}
 	
 	@PUT
