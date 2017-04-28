@@ -1,6 +1,7 @@
 LetsEatServer\User.class
 LetsEatServer\AccountResources.class
 LetsEatServer\MatchResources.class
+LetsEatServer\MeetingResources.class
 LetsEatServer\SearchResources.class
 LetsEatServer\UserResources.class
 LetsEatServer\PassHash$InvalidHashException.class
