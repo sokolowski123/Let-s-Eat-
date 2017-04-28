@@ -145,7 +145,6 @@ public class ChatResources {
 	}
 	
 	@DELETE
-	@Path("{userId}")
     @Produces(MediaType.APPLICATION_JSON)
 	public void deleteUser(@PathParam("userId") String userId) {
 		

@@ -106,6 +106,18 @@ public class UserResources {
             doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
         } 
         
+        if (node.get("chatNotification") != null) {
+        	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatNotification", node.get("chatNotification").asInt())));
+        }
+        
+        if (node.get("meetingNotification") != null) {
+        	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("meetingNotification", node.get("meetingNotification").asInt())));
+        }
+        
+        if (node.get("matchNotification") != null) {
+        	doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matchNotification", node.get("matchNotification").asInt())));
+        }
+        
         /* Close connection to database. */
         mongo.close();
     
@@ -179,13 +191,17 @@ public class UserResources {
             doc.updateOne(new Document("_id", userId), new Document("$set", new Document("name", node.get("name").textValue())));
         } 
         
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("chatNotification", 0)));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("meetingNotification", 0)));
+        doc.updateOne(new Document("_id", userId), new Document("$set", new Document("matchNotification", 0)));
+        
         /* Close connection to database. */
         mongo.close();
         
     }
     
     @DELETE
-    @Path("{userId}")
+    @Path("/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void deleteUser(@PathParam("userId") String userId) {
     	
