@@ -140,7 +140,7 @@ public class MatchResources {
 	}
 	
 	@DELETE
-	@Path("{userId}")
+	@Path("/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public void deleteMatches(@PathParam("userId") String userId) {
 			
